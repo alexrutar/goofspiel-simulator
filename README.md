@@ -36,7 +36,7 @@ class GSStrategy:
 - At the beginning of each step of the game, `get_bid` is called, where `step_value` is the integer revealed for that step (i.e. the number of points that turn is worth).
   This function must return a valid integer bid (distinct from all other bids made earlier during the game).
   If the bid is not valid, the game will automatically return the smallest possible bid.
-- After every step of the game, `update_history` is called with `hist=(card,other_bids,your_bid)` and `card` is the integer value of the card just played, `other_plays` is a list of the bids that the other players made last turn, and `your_bid` is the bid that you made last turn.
+- After every step of the game, `update_history` is called with the tuple `hist=(step_value,other_bids,your_bid)` and `step_value` is the integer value of the step just played, `other_bids` is a list of the bids that the other players made last turn, and `your_bid` is the bid that you made last turn.
   Note that if the bid made by `get_bid` is invalid, `your_bid` may be different than the return value of `get_bid`.
 
 Other helper methods may be implemented, but the class is not allowed to maintain global state other than `name`.
