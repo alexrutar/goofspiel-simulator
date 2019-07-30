@@ -12,7 +12,7 @@ One can find a description of the card game on the [Wikipedia page for Goofspiel
 ## Goofspiel Strategies
 In this implementation, strategies are rules which are implemented as below.
 For each pair of strategies, a series of `n` games are played, where `n` is an unknown horizon (but usually set to 100).
-Strategies are allowed to maintain state between games of a series, but are always re-initialized at the end of the game.
+Strategies are allowed to maintain state between games of a series, but a new instance will be created for every series.
 
 Any strategy class should be a subclass of the model below:
 ~~~python
@@ -40,3 +40,4 @@ class GSStrategy:
   Note that if the bid made by `get_bid` is invalid, `your_bid` may be different than the return value of `get_bid`.
 
 Other helper methods may be implemented, but the class is not allowed to maintain global state other than `name`.
+See the `strategies.py` file for example strategies.
