@@ -21,10 +21,10 @@ class GSStrategy:
     def __init__(self, n):
         raise NotImplementedError
 
-    def get_bid(self, new_card):
+    def start_game(self):
         raise NotImplementedError
 
-    def start_game(self):
+    def get_bid(self, new_card):
         raise NotImplementedError
 
     def update_history(self, hist):
@@ -33,7 +33,7 @@ class GSStrategy:
 - `name` is a string which works as an identifier for the strategy.
 - `__init__` is called at the beginning of the series, and the parameter `n` describes how many moves there are in a given game (usually 13).
 - `start_game` is called at the beginning of each game, to initialize parameters etc.
-- At the beginning of each step of the game, `get_move` is called, where `new_card` is the integer revealed for that step.
+- At the beginning of each step of the game, `get_bid` is called, where `new_card` is the integer revealed for that step.
   This function must return a valid integer bid (distinct from all other bids made earlier during the game).
   If the bid is not valid, the game will automatically return the smallest possible bid.
 - After every step of the game, `update_history` is called with `hist=(card,other_bids,your_bid)` and `card` is the integer value of the card just played, `other_plays` is a list of the bids that the other players made last turn, and `your_bid` is the bid that you made last turn.
