@@ -12,7 +12,7 @@ class RandomStrategy(GSStrategy):
         self.valid_moves = list(range(self.n))
         random.shuffle(self.valid_moves)
 
-    def get_bid(self, step_value):
+    def get_bid(self, turn_value):
         return self.valid_moves.pop()
 
     def update_history(self, hist):
@@ -27,8 +27,8 @@ class CopyStrategy(GSStrategy):
     def start_game(self):
         return
 
-    def get_bid(self, step_value):
-        return step_value
+    def get_bid(self, turn_value):
+        return turn_value
 
     def update_history(self, hist):
         return
@@ -43,8 +43,8 @@ class CopyP1Strategy(GSStrategy):
     def start_game(self):
         return
 
-    def get_bid(self, step_value):
-        return (step_value + 1) % self.n
+    def get_bid(self, turn_value):
+        return (turn_value + 1) % self.n
 
     def update_history(self, hist):
         return
@@ -60,19 +60,20 @@ class AntiPureStrategy(GSStrategy):
     name = "anti_pure"
     def __init__(self, game_params):
         self.n = game_params['length']
-        self.n_players = game_params['n_players']
-        assert self.n_players == 2
-        self.opponent_map = {n:n for n in range(self.n)}
+        self.players = game_params['players']
+        assert len(self.players) == 2
+        self.op_name = [pl for pl in self.players if pl != self.name][0]
+        self.op_map = {n:n for n in range(self.n)}
 
     def start_game(self):
         return
 
     def update_history(self, hist):
-        # update the bids made by the opponent
-        self.opponent_map[hist['step_value']] = hist['other_bids'][0]
+        # update the bids made by the op
+        self.op_map[hist['turn_value']] = hist['bids'][self.op_name]
 
-    def get_bid(self, step_value):
-        return (self.opponent_map[step_value] + 1) % self.n
+    def get_bid(self, turn_value):
+        return (self.op_map[turn_value] + 1) % self.n
 
 
 

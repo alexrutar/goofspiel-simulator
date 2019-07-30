@@ -46,32 +46,34 @@ class GSPlayer:
         return move
 
 class GSSeries:
-    def __init__(self, strat_cls_list, n=13):
+    def __init__(self, strat_cls_list, n=13,n_games=1000):
         self.n = n
-        self.players = [GSPlayer(self, strat({'length':n,'n_players':len(strat_cls_list)})) for strat in strat_cls_list]
-        self.series_data = SeriesData(tuple(pl.name for pl in self.players))
+        self.player_names = tuple(strat.name for strat in strat_cls_list)
+        self.players = {strat.name:GSPlayer(self, strat({'length':n,'players':self.player_names,'horizon':n_games})) for strat in strat_cls_list}
+        self.series_data = SeriesData(tuple(self.players.keys()))
+        self.n_games=n_games
 
     def game_step(self,card):
-        plays = [pl.make_move(card) for pl in self.players] # plays is a list of the moves
-        winning = max(plays)
-        winners = [i for i,pl in enumerate(plays) if pl == winning]
+        bids = {pl.name:pl.make_move(card) for pl in self.players.values()} # bids is a dict of the moves
+        winning = max(bids.values())
+        winners = tuple(k for k,v in bids.items() if v == winning)
         pts = card/len(winners)
         for w in winners:
             self.players[w].update_score(pts)
-        for idx,pl in enumerate(self.players):
-            pl.update_history({'step_value':card,'other_bids':plays[:idx]+plays[idx+1:],'your_bid':plays[idx]})
-        return plays
+        for pl in self.players.values():
+            pl.update_history({'turn_value':card,'bids':bids})
+        return bids
 
     def run_game(self):
-        for pl in self.players:
+        for pl in self.players.values():
             pl.reset()
         cards = list(range(self.n))
         random.shuffle(cards)
         plays = [self.game_step(card) for card in cards]
-        self.series_data.add_game_data({'scores':{pl.name:pl.score for pl in self.players},'moves':{pl.name:[play[i] for play in plays] for i,pl in enumerate(self.players)}})
+        self.series_data.add_game_data({'scores':{pl.name:pl.score for pl in self.players.values()},'cards':cards,'moves':{pl.name:[play[pl.name] for play in plays] for pl in self.players.values()}})
 
-    def run_series(self,n_games):
-        for _ in range(n_games):
+    def run_series(self):
+        for _ in range(self.n_games):
             self.run_game()
         return self.series_data
         
