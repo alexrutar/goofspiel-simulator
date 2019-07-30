@@ -25,7 +25,7 @@ class GSPlayer:
         self.legal_moves = list(range(self.game.n))
         self.score = 0
 
-    def reset(self):
+    def start_game(self):
         self.score = 0
         self.legal_moves = list(range(self.game.n))
         self.strat.reset()
@@ -36,7 +36,7 @@ class GSPlayer:
     def update_history(self, data):
         self.strat.update_history(data)
 
-    def make_move(self, new_card):
+    def get_bid(self, new_card):
         move = self.strat.get_move(new_card)
         try:
             self.legal_moves.remove(move)
@@ -52,7 +52,7 @@ class GSSeries:
         self.game_data = []
 
     def game_step(self,card):
-        plays = [pl.make_move(card) for pl in self.players] # plays is a list of the moves
+        plays = [pl.get_bid(card) for pl in self.players] # plays is a list of the moves
         winning = max(plays)
         winners = [i for i,pl in enumerate(plays) if pl == winning]
         pts = card/len(winners)
@@ -64,7 +64,7 @@ class GSSeries:
 
     def run_game(self):
         for pl in self.players:
-            pl.reset()
+            pl.start_game()
         cards = list(range(self.n))
         random.shuffle(cards)
         plays = [self.game_step(card) for card in cards]
