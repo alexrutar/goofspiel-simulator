@@ -3,7 +3,7 @@ from base import GSSeries
 
 
 def run_game(strats,n_games,game_size=2):
-    return [GSSeries(combo).run_series() for combo in itertools.combinations(strats, game_size)]
+    return [GSSeries(combo,horizon=n_games).run_series() for combo in itertools.combinations(strats, game_size)]
 
 
 if __name__ == '__main__':

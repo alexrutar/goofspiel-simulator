@@ -46,12 +46,12 @@ class GSPlayer:
         return move
 
 class GSSeries:
-    def __init__(self, strat_cls_list, n=13,n_games=1000):
+    def __init__(self, strat_cls_list, n=13,horizon=1000):
         self.n = n
         self.player_names = tuple(strat.name for strat in strat_cls_list)
-        self.players = {strat.name:GSPlayer(self, strat({'length':n,'players':self.player_names,'horizon':n_games})) for strat in strat_cls_list}
+        self.players = {strat.name:GSPlayer(self, strat({'length':n,'players':self.player_names,'horizon':horizon})) for strat in strat_cls_list}
         self.series_data = SeriesData(tuple(self.players.keys()))
-        self.n_games=n_games
+        self.horizon=horizon
 
     def game_step(self,card):
         bids = {pl.name:pl.make_move(card) for pl in self.players.values()} # bids is a dict of the moves
@@ -73,7 +73,7 @@ class GSSeries:
         self.series_data.add_game_data({'scores':{pl.name:pl.score for pl in self.players.values()},'cards':cards,'moves':{pl.name:[play[pl.name] for play in plays] for pl in self.players.values()}})
 
     def run_series(self):
-        for _ in range(self.n_games):
+        for _ in range(self.horizon):
             self.run_game()
         return self.series_data
         
