@@ -48,8 +48,8 @@ class GSPlayer:
 class GSSeries:
     def __init__(self, strat_cls_list, n=13,horizon=1000):
         self.n = n
-        self.player_names = tuple(strat.name for strat in strat_cls_list)
-        self.players = {strat.name:GSPlayer(self, strat({'length':n,'players':self.player_names,'horizon':horizon})) for strat in strat_cls_list}
+        self.player_names = tuple(str(strat.name) for strat in strat_cls_list)
+        self.players = {name:GSPlayer(self, strat({'length':n,'players':self.player_names,'horizon':horizon})) for name,strat in zip(self.player_names,strat_cls_list)}
         self.series_data = SeriesData(tuple(self.players.keys()))
         self.horizon=horizon
 
