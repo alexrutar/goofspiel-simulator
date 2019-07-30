@@ -50,16 +50,18 @@ class CopyP1Strategy(GSStrategy):
         return
 
 
-class AntiDetStrategy(GSStrategy):
-    """Creates an internal distribution map for the opponent's gameplay.
+class AntiPureStrategy(GSStrategy):
+    """Creates an internal distribution map for the opponent's gameplay on the last round.
     This strategy assumes there is only 1 other player.
-    Initial distribution assumes the opposing player will play exactly what the card is."""
-    name = "anti_deterministic"
+    Initial distribution assumes the opposing player will play exactly what the card is.
+
+    Gameplay is optimal against any pure strategy.
+    """
+    name = "anti_pure"
     def __init__(self, game_params):
         self.n = game_params['length']
         self.n_players = game_params['n_players']
-        if self.n_players != 2:
-            raise Exception("Strategy is invalid for more than 2 players.")
+        assert self.n_players == 2
         self.opponent_map = {n:n for n in range(self.n)}
 
     def start_game(self):

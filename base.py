@@ -100,6 +100,6 @@ class SeriesData:
 
     def report(self):
         return "\nGame with players: " + ", ".join(name for name in self.names) + "\n" \
-                + "Average scores: " + str({k:s/len(self.series) for k,s in self.scores.items()}) + "\n" \
-                + "Points: " + str(self.points)
+                + "  Average scores: " + str({k:s/len(self.series) for k,s in self.scores.items()}) + "\n" \
+                + "  Points: " + str(self.points)
 

@@ -9,6 +9,6 @@ def run_game(strats,n_games,game_size=2):
 if __name__ == '__main__':
     from strategies import *
     strats = [RandomStrategy,CopyStrategy,CopyP1Strategy,AntiDetStrategy]
-    data = run_game(strats,1000)
+    data = run_game(strats,100)
     for v in data:
         print(v.report())
