@@ -18,7 +18,7 @@ Any strategy class should be a subclass of the model below:
 ~~~python
 class GSStrategy:
     name = ""
-    def __init__(self, game_length):
+    def __init__(self, game_params):
         raise NotImplementedError
 
     def start_game(self):
@@ -31,12 +31,15 @@ class GSStrategy:
         raise NotImplementedError
 ~~~
 - `name` is a string which works as an identifier for the strategy.
-- `__init__` is called at the beginning of the series, and the parameter `game_length` describes how many moves there are in a given game (usually 13).
+- `__init__` is called at the beginning of the series, and the parameter `game_params` is a dict with two attributes: `length`, the number of bids made during a game, and `n_players`, the total number of players
 - `start_game` is called at the beginning of each game, to initialize parameters etc.
 - At the beginning of each step of the game, `get_bid` is called, where `step_value` is the integer revealed for that step (i.e. the number of points that turn is worth).
   This function must return a valid integer bid (distinct from all other bids made earlier during the game).
   If the bid is not valid, the game will automatically return the smallest possible bid.
-- After every step of the game, `update_history` is called with the tuple `hist=(step_value,other_bids,your_bid)` and `step_value` is the integer value of the step just played, `other_bids` is a list of the bids that the other players made last turn, and `your_bid` is the bid that you made last turn.
+- After every step of the game, `update_history` is called with the dict `hist` which has keys
+  1. `step_value`, the integer value of the step just played
+  2. `other_bids`, a list of the bids that the other players made last turn
+  3. `your_bid`, the bid that you made last turn.
   Note that if the bid made by `get_bid` is invalid, `your_bid` may be different than the return value of `get_bid`.
 
 Other helper methods may be implemented, but the class is not allowed to maintain global state other than `name`.
