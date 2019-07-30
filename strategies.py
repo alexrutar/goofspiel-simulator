@@ -7,26 +7,26 @@ class RandomStrategy(GSStrategy):
     def __init__(self, n):
         self.n = n
 
-    def update_history(self, hist):
-        return
-
-    def get_move(self, new_card):
-        return self.valid_moves.pop()
-
-    def reset(self):
+    def start_game(self):
         self.valid_moves = list(range(self.n))
         random.shuffle(self.valid_moves)
+
+    def get_bid(self, step_value):
+        return self.valid_moves.pop()
+
+    def update_history(self, hist):
+        return
 
 class CopyStrategy(GSStrategy):
     name = "copy"
     def __init__(self, n):
         return
 
-    def update_history(self, hist):
+    def start_game(self):
         return
 
-    def get_move(self, new_card):
-        return new_card
+    def get_bid(self, step_value):
+        return step_value
 
-    def reset(self):
+    def update_history(self, hist):
         return

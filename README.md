@@ -11,29 +11,29 @@ One can find a description of the card game on the [Wikipedia page for Goofspiel
 
 ## Goofspiel Strategies
 In this implementation, strategies are rules which are implemented as below.
-For each pair of strategies, a series of `n` games are played, where `n` is an unknown horizon.
+For each pair of strategies, a series of `n` games are played, where `n` is an unknown horizon (but usually set to 100).
 Strategies are allowed to maintain state between games of a series, but are always re-initialized at the end of the game.
 
 Any strategy class should be a subclass of the model below:
 ~~~python
 class GSStrategy:
     name = ""
-    def __init__(self, n):
+    def __init__(self, game_length):
         raise NotImplementedError
 
     def start_game(self):
         raise NotImplementedError
 
-    def get_bid(self, new_card):
+    def get_bid(self, step_value):
         raise NotImplementedError
 
     def update_history(self, hist):
         raise NotImplementedError
 ~~~
 - `name` is a string which works as an identifier for the strategy.
-- `__init__` is called at the beginning of the series, and the parameter `n` describes how many moves there are in a given game (usually 13).
+- `__init__` is called at the beginning of the series, and the parameter `game_length` describes how many moves there are in a given game (usually 13).
 - `start_game` is called at the beginning of each game, to initialize parameters etc.
-- At the beginning of each step of the game, `get_bid` is called, where `new_card` is the integer revealed for that step.
+- At the beginning of each step of the game, `get_bid` is called, where `step_value` is the integer revealed for that step (i.e. the number of points that turn is worth).
   This function must return a valid integer bid (distinct from all other bids made earlier during the game).
   If the bid is not valid, the game will automatically return the smallest possible bid.
 - After every step of the game, `update_history` is called with `hist=(card,other_bids,your_bid)` and `card` is the integer value of the card just played, `other_plays` is a list of the bids that the other players made last turn, and `your_bid` is the bid that you made last turn.

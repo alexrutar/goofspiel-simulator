@@ -4,17 +4,16 @@ import logging
 
 class GSStrategy:
     name = ""
-    # n is the number of moves in the game, usually 13
-    def __init__(self, n):
+    def __init__(self, game_length):
+        raise NotImplementedError
+
+    def start_game(self):
+        raise NotImplementedError
+
+    def get_bid(self, step_value):
         raise NotImplementedError
 
     def update_history(self, hist):
-        raise NotImplementedError
-
-    def get_move(self, new_card):
-        raise NotImplementedError
-
-    def reset(self):
         raise NotImplementedError
 
 class GSPlayer:
@@ -25,10 +24,10 @@ class GSPlayer:
         self.legal_moves = list(range(self.game.n))
         self.score = 0
 
-    def start_game(self):
+    def reset(self):
         self.score = 0
         self.legal_moves = list(range(self.game.n))
-        self.strat.reset()
+        self.strat.start_game()
 
     def update_score(self, v):
         self.score += v
@@ -36,8 +35,8 @@ class GSPlayer:
     def update_history(self, data):
         self.strat.update_history(data)
 
-    def get_bid(self, new_card):
-        move = self.strat.get_move(new_card)
+    def make_move(self, new_card):
+        move = self.strat.get_bid(new_card)
         try:
             self.legal_moves.remove(move)
         except ValueError:
@@ -52,7 +51,7 @@ class GSSeries:
         self.game_data = []
 
     def game_step(self,card):
-        plays = [pl.get_bid(card) for pl in self.players] # plays is a list of the moves
+        plays = [pl.make_move(card) for pl in self.players] # plays is a list of the moves
         winning = max(plays)
         winners = [i for i,pl in enumerate(plays) if pl == winning]
         pts = card/len(winners)
@@ -64,7 +63,7 @@ class GSSeries:
 
     def run_game(self):
         for pl in self.players:
-            pl.start_game()
+            pl.reset()
         cards = list(range(self.n))
         random.shuffle(cards)
         plays = [self.game_step(card) for card in cards]
