@@ -43,8 +43,8 @@ class GSStrategy:
   If the bid is not valid, the game will automatically return the smallest possible bid.
 - After every step of the game, `update_history` is called with the dict `hist` which has keys
   1. `turn_value`, the integer value of the step just played
-  2. `bids`, a dict with keys that are player names, and value is the bid that player made on that turn
-  Note that if the bid made by `get_bid` is invalid, `your_bid` may be different than the return value of `get_bid`.
+  2. `bids`, a dict with keys that are player names, and value is the bid that player made on that turn.
+  Note that if the bid made by `get_bid` is invalid, the bid made by your strategy as listed in the dict may be different than the return value of `get_bid`.
 
 Other helper methods may be implemented, but the class is not allowed to maintain global state other than `name`.
 See the `strategies.py` file for example strategies.
