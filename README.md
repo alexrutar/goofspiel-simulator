@@ -26,7 +26,7 @@ class GSStrategy:
     def start_game(self):
         raise NotImplementedError
 
-    def get_bid(self, step_value):
+    def get_bid(self, turn_value):
         raise NotImplementedError
 
     def update_history(self, hist):
@@ -38,7 +38,7 @@ class GSStrategy:
   2. `players`, a tuple containing the names of all the players in the game
   3. `horizon`, how many turns will be played in the series
 - `start_game` is called at the beginning of each game, to initialize parameters etc.
-- At the beginning of each step of the game, `get_bid` is called, where `step_value` is the integer revealed for that step (i.e. the number of points that turn is worth).
+- At the beginning of each step of the game, `get_bid` is called, where `turn_value` is the integer revealed for that step (i.e. the number of points that turn is worth).
   This function must return a valid integer bid (distinct from all other bids made earlier during the game).
   If the bid is not valid, the game will automatically return the smallest possible bid.
 - After every step of the game, `update_history` is called with the dict `hist` which has keys
