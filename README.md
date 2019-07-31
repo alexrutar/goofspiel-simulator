@@ -13,7 +13,7 @@ One can find a description of the card game on the [Wikipedia page for Goofspiel
 This program is designed to be run with Python 3.7, though it will likely work with Python 3.5+.
 
 In this implementation, strategies are rules which are implemented as below.
-For each pair of strategies, a series of `n` games are played, where `n` is an unknown horizon (but usually set to 100).
+For each pair of strategies, a fixed number of games is played.
 Strategies are allowed to maintain state between games of a series, but a new instance will be created for every series.
 
 Any strategy class should be a subclass of the model below:
@@ -48,3 +48,5 @@ class GSStrategy:
 
 Other helper methods may be implemented, but the class is not allowed to maintain global state other than `name`.
 See the `strategies.py` file for example strategies.
+
+In order to test your strategies against the naive approaches used in `strategies.py`, or against your own written strategies, see the `run_game` function in the `game.py` file.
